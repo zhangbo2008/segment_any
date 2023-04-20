@@ -15,4 +15,4 @@ image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
 
 masks = mask_generator.generate(image)
-print(1)
+print(masks)
