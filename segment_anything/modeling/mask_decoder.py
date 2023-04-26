@@ -12,7 +12,7 @@ from typing import List, Tuple, Type
 
 from .common import LayerNorm2d
 
-
+#=======解码器生成最后的mask信息.
 class MaskDecoder(nn.Module):
     def __init__(
         self,
@@ -117,7 +117,7 @@ class MaskDecoder(nn.Module):
         dense_prompt_embeddings: torch.Tensor,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """Predicts masks. See 'forward' for more details."""
-        # Concatenate output tokens
+        # Concatenate output tokens#添加tokens
         output_tokens = torch.cat([self.iou_token.weight, self.mask_tokens.weight], dim=0)
         output_tokens = output_tokens.unsqueeze(0).expand(sparse_prompt_embeddings.size(0), -1, -1)
         tokens = torch.cat((output_tokens, sparse_prompt_embeddings), dim=1)
@@ -143,7 +143,7 @@ class MaskDecoder(nn.Module):
         b, c, h, w = upscaled_embedding.shape
         masks = (hyper_in @ upscaled_embedding.view(b, c, h * w)).view(b, -1, h, w)
 
-        # Generate mask quality predictions
+        # Generate mask quality predictions======返回预测平分.
         iou_pred = self.iou_prediction_head(iou_token_out)
 
         return masks, iou_pred

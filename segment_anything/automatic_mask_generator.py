@@ -50,7 +50,7 @@ class SamAutomaticMaskGenerator:
         min_mask_region_area: int = 0,
         output_mode: str = "binary_mask",
     ) -> None:
-        """
+        """#=========使用sam模型进行整个图片的mask生成.
         Using a SAM model, generates masks for the entire image.
         Generates a grid of point prompts over the image, then filters
         low quality and duplicate masks. The default settings are chosen
@@ -276,7 +276,7 @@ class SamAutomaticMaskGenerator:
         transformed_points = self.predictor.transform.apply_coords(points, im_size)
         in_points = torch.as_tensor(transformed_points, device=self.predictor.device)
         in_labels = torch.ones(in_points.shape[0], dtype=torch.int, device=in_points.device)
-        masks, iou_preds, _ = self.predictor.predict_torch(
+        masks, iou_preds, _ = self.predictor.predict_torch(#=========运行得到mask结果.
             in_points[:, None, :],
             in_labels[:, None],
             multimask_output=True,
@@ -304,7 +304,7 @@ class SamAutomaticMaskGenerator:
             keep_mask = data["stability_score"] >= self.stability_score_thresh
             data.filter(keep_mask)
 
-        # Threshold masks and calculate boxes
+        # Threshold masks and calculate boxes #mask来计算box
         data["masks"] = data["masks"] > self.predictor.model.mask_threshold
         data["boxes"] = batched_mask_to_box(data["masks"])
 

@@ -1,5 +1,5 @@
 
-
+#==============利用这个服务来提供sam服务.
 import os
 import io
 import json
@@ -70,7 +70,7 @@ def editorData():
     print(masks)
     import flask
     flask.jsonify
-    return url
+    return flask.jsonify(masks)
 
 
 if __name__ == '__main__':

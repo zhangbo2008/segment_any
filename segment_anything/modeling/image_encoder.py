@@ -14,7 +14,7 @@ from .common import LayerNorm2d, MLPBlock
 
 
 # This class and its supporting functions below lightly adapted from the ViTDet backbone available at: https://github.com/facebookresearch/detectron2/blob/main/detectron2/modeling/backbone/vit.py # noqa
-class ImageEncoderViT(nn.Module):
+class ImageEncoderViT(nn.Module):         # vit代码.
     def __init__(
         self,
         img_size: int = 1024,
@@ -104,8 +104,8 @@ class ImageEncoderViT(nn.Module):
         )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.patch_embed(x)
-        if self.pos_embed is not None:
+        x = self.patch_embed(x) # patchify
+        if self.pos_embed is not None: # self.pos_embed 1,64,64, 768
             x = x + self.pos_embed
 
         for blk in self.blocks:
@@ -218,7 +218,7 @@ class Attention(nn.Module):
                 input_size is not None
             ), "Input size must be provided if using relative positional encoding."
             # initialize relative positional embeddings
-            self.rel_pos_h = nn.Parameter(torch.zeros(2 * input_size[0] - 1, head_dim))
+            self.rel_pos_h = nn.Parameter(torch.zeros(2 * input_size[0] - 1, head_dim)) # 序列从1.....n.  那么序列的差的范围是n-1到n+1.  所以整个范围是2n-1  #我们用随机数来初始化rel_pos
             self.rel_pos_w = nn.Parameter(torch.zeros(2 * input_size[1] - 1, head_dim))
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -250,7 +250,7 @@ def window_partition(x: torch.Tensor, window_size: int) -> Tuple[torch.Tensor, T
     Returns:
         windows: windows after partition with [B * num_windows, window_size, window_size, C].
         (Hp, Wp): padded height and width before partition
-    """
+    """  #=========把整个1,64,64图片变成windows_size的整数倍. 1,5,14,5,14
     B, H, W, C = x.shape
 
     pad_h = (window_size - H % window_size) % window_size
@@ -350,7 +350,7 @@ def add_decomposed_rel_pos(
     Rw = get_rel_pos(q_w, k_w, rel_pos_w)
 
     B, _, dim = q.shape
-    r_q = q.reshape(B, q_h, q_w, dim)
+    r_q = q.reshape(B, q_h, q_w, dim)# 把q改成rel模式
     rel_h = torch.einsum("bhwc,hkc->bhwk", r_q, Rh)
     rel_w = torch.einsum("bhwc,wkc->bhwk", r_q, Rw)
 

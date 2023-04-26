@@ -169,6 +169,6 @@ class Sam(nn.Module):
         # Pad
         h, w = x.shape[-2:]
         padh = self.image_encoder.img_size - h
-        padw = self.image_encoder.img_size - w
+        padw = self.image_encoder.img_size - w #padding到1024的正方形.
         x = F.pad(x, (0, padw, 0, padh))
         return x

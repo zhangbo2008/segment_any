@@ -33,7 +33,7 @@ class LayerNorm2d(nn.Module):
         super().__init__()
         self.weight = nn.Parameter(torch.ones(num_channels))
         self.bias = nn.Parameter(torch.zeros(num_channels))
-        self.eps = eps
+        self.eps = eps  # 这个网络需要学习的参数是weight和bias.
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         u = x.mean(1, keepdim=True)

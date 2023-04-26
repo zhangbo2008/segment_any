@@ -105,7 +105,7 @@ def batch_iterator(batch_size: int, *args) -> Generator[List[Any], None, None]:
 
 
 def mask_to_rle_pytorch(tensor: torch.Tensor) -> List[Dict[str, Any]]:
-    """
+    """ #==========进行rle编码. 比mask节省内存.
     Encodes masks to an uncompressed RLE, in the format expected by
     pycoco tools.
     """

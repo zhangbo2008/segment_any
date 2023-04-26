@@ -1,10 +1,10 @@
 
 #=========输入提示词,来获得maks图片.
-pat='/mnt/e/sam_vit_h_4b8939.pth'
+pat='/mnt/e/sam_vit_b_01ec64.pth'
 
 promp=''
 from segment_anything import SamAutomaticMaskGenerator, sam_model_registry
-sam = sam_model_registry["default"](checkpoint=pat)
+sam = sam_model_registry["vit_b"](checkpoint=pat)
 mask_generator = SamAutomaticMaskGenerator(sam)
 
 import cv2
