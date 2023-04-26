@@ -177,7 +177,7 @@ def calculate_stability_score(
 
 
 def build_point_grid(n_per_side: int) -> np.ndarray:
-    """Generates a 2D grid of points evenly spaced in [0,1]x[0,1]."""
+    """Generates a 2D grid of points evenly spaced in [0,1]x[0,1].""" # 平面平均分布的points
     offset = 1 / (2 * n_per_side)
     points_one_side = np.linspace(offset, 1 - offset, n_per_side)
     points_x = np.tile(points_one_side[None, :], (n_per_side, 1))

@@ -237,12 +237,12 @@ class SamAutomaticMaskGenerator:
 
         # Get points for this crop
         points_scale = np.array(cropped_im_size)[None, ::-1]
-        points_for_image = self.point_grids[crop_layer_idx] * points_scale
+        points_for_image = self.point_grids[crop_layer_idx] * points_scale#得到1024个点在image上均匀分布.
 
         # Generate masks for this crop in batches
         data = MaskData()
         for (points,) in batch_iterator(self.points_per_batch, points_for_image):
-            batch_data = self._process_batch(points, cropped_im_size, crop_box, orig_size)
+            batch_data = self._process_batch(points, cropped_im_size, crop_box, orig_size) #每一次我们取64个点进行处理. points:64个点.
             data.cat(batch_data)
             del batch_data
         self.predictor.reset_image()
